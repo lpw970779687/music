@@ -12,21 +12,9 @@
 
 const PLAYLIST = [
   {
-    title: '示例歌曲 1',
-    artist: '艺术家名称',
-    file: 'music/song1.mp3',
-    cover: 'img/default-cover.svg'
-  },
-  {
-    title: '示例歌曲 2',
-    artist: '艺术家名称',
-    file: 'music/song2.mp3',
-    cover: 'img/default-cover.svg'
-  },
-  {
-    title: '示例歌曲 3',
-    artist: '艺术家名称',
-    file: 'music/song3.mp3',
+    title: '泡沫',
+    artist: '鸟森',
+    file: 'http://120.48.138.203/music/%E9%B8%9F%E6%A3%AE_-_%E6%B3%A1%E6%B2%AB.MP3',
     cover: 'img/default-cover.svg'
   }
 ];
