@@ -1,0 +1,673 @@
+/* ============================================
+   🎵 Music Player - 样式表
+   ============================================ */
+
+/* --- CSS 变量 --- */
+:root {
+  --primary: #6c5ce7;
+  --primary-light: #a29bfe;
+  --primary-dark: #4834d4;
+  --accent: #fd79a8;
+  --accent-light: #fab1c8;
+  --bg-dark: #0a0a1a;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-tertiary: rgba(255, 255, 255, 0.35);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* --- 全局重置 --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   背景效果
+   ============================================ */
+.bg-effects {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gradient-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+
+.circle-1 {
+  width: 600px;
+  height: 600px;
+  background: var(--primary);
+  top: -10%;
+  left: -10%;
+  animation-delay: 0s;
+}
+
+.circle-2 {
+  width: 500px;
+  height: 500px;
+  background: var(--accent);
+  bottom: -10%;
+  right: -10%;
+  animation-delay: -7s;
+}
+
+.circle-3 {
+  width: 400px;
+  height: 400px;
+  background: #00cec9;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -50px) scale(1.1); }
+  50% { transform: translate(-30px, 30px) scale(0.95); }
+  75% { transform: translate(40px, 40px) scale(1.05); }
+}
+
+/* ============================================
+   主布局
+   ============================================ */
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ============================================
+   播放器卡片
+   ============================================ */
+.player {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 32px;
+  transition: var(--transition);
+}
+
+.player:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* --- 专辑封面 --- */
+.player-cover {
+  flex-shrink: 0;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.cover-wrapper {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cover-img.playing {
+  animation: spinCover 20s linear infinite;
+}
+
+@keyframes spinCover {
+  from { transform: rotate(0deg) scale(1.05); }
+  to { transform: rotate(360deg) scale(1.05); }
+}
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.2), rgba(253, 121, 168, 0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.cover-wrapper:hover .cover-overlay {
+  opacity: 1;
+}
+
+.cover-overlay i {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* --- 可视化器 --- */
+.visualizer {
+  width: 220px;
+  height: 40px;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  opacity: 0.6;
+}
+
+.visualizer canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================
+   播放器信息
+   ============================================ */
+.player-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* --- 歌曲标题 --- */
+.song-meta {
+  text-align: left;
+}
+
+.song-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(135deg, var(--text-primary), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.song-artist {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- 进度条 --- */
+.progress-container {
+  width: 100%;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: height 0.2s ease;
+}
+
+.progress-bar:hover {
+  height: 8px;
+}
+
+.progress-current {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 3px;
+  width: 0%;
+  position: relative;
+  transition: width 0.1s linear;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.progress-bar:hover .progress-thumb {
+  opacity: 1;
+}
+
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 控制按钮 --- */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.control-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+}
+
+.control-btn:active {
+  transform: scale(0.92);
+}
+
+.play-btn {
+  width: 52px;
+  height: 52px;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--text-primary);
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+}
+
+.play-btn:hover {
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
+  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+}
+
+/* 按钮激活状态 */
+.control-btn.active {
+  color: var(--primary-light);
+}
+
+.control-btn.active i {
+  filter: drop-shadow(0 0 6px rgba(108, 92, 231, 0.5));
+}
+
+/* --- 音量控制 --- */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.volume-control .control-btn {
+  font-size: 1rem;
+  width: 32px;
+  height: 32px;
+}
+
+.volume-slider {
+  flex: 1;
+}
+
+.volume-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.volume-current {
+  height: 100%;
+  background: var(--primary-light);
+  border-radius: 2px;
+  width: 70%;
+  transition: width 0.05s linear;
+}
+
+.volume-thumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.volume-bar:hover .volume-thumb {
+  opacity: 1;
+}
+
+/* ============================================
+   播放列表
+   ============================================ */
+.playlist {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  max-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.playlist-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playlist-header h3 i {
+  color: var(--primary-light);
+}
+
+.song-count {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.playlist-list {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 自定义滚动条 */
+.playlist-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.playlist-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.playlist-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.playlist-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* 播放列表项 */
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.playlist-item:hover {
+  background: var(--bg-card-hover);
+}
+
+.playlist-item.active {
+  background: rgba(108, 92, 231, 0.15);
+  border-left: 3px solid var(--primary);
+}
+
+.playlist-item.active .item-title {
+  color: var(--primary-light);
+}
+
+.playlist-item .item-index {
+  width: 24px;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.playlist-item.active .item-index {
+  color: var(--primary-light);
+}
+
+.playlist-item .item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.playlist-item .item-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: var(--transition);
+}
+
+.playlist-item .item-artist {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-item .item-duration {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.playlist-item .playing-indicator {
+  display: none;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  box-shadow: 0 0 8px var(--primary-light);
+  animation: pulse 1s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.playlist-item.active .playing-indicator {
+  display: block;
+}
+
+/* ============================================
+   响应式适配
+   ============================================ */
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+  .player {
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .player-cover {
+    width: 180px;
+  }
+
+  .cover-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+
+  .visualizer {
+    width: 180px;
+  }
+
+  .player-info {
+    width: 100%;
+  }
+
+  .song-meta {
+    text-align: center;
+  }
+
+  .playlist {
+    max-height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 12px;
+  }
+
+  .player {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .player-cover {
+    width: 140px;
+  }
+
+  .cover-wrapper {
+    width: 140px;
+    height: 140px;
+  }
+
+  .visualizer {
+    width: 140px;
+    height: 30px;
+  }
+
+  .song-title {
+    font-size: 1.2rem;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .playlist {
+    max-height: 280px;
+    padding: 14px;
+  }
+}
+
+/* ============================================
+   入场动画
+   ============================================ */
+.player, .playlist {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.player {
+  animation-delay: 0.1s;
+}
+
+.playlist {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

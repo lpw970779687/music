@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎵 Music Player</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Font Awesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="app">
+    <!-- 背景动态效果 -->
+    <div class="bg-effects">
+      <div class="gradient-circle circle-1"></div>
+      <div class="gradient-circle circle-2"></div>
+      <div class="gradient-circle circle-3"></div>
+    </div>
+
+    <!-- 主播放器 -->
+    <div class="player">
+      <!-- 专辑封面 -->
+      <div class="player-cover">
+        <div class="cover-wrapper">
+          <img src="img/default-cover.svg" alt="Album Cover" id="coverImage" class="cover-img">
+          <div class="cover-overlay">
+            <i class="fas fa-music"></i>
+          </div>
+        </div>
+        <!-- 音频可视化 -->
+        <div class="visualizer" id="visualizer">
+          <canvas id="visualizerCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- 歌曲信息 -->
+      <div class="player-info">
+        <div class="song-meta">
+          <h2 id="songTitle" class="song-title">未选择歌曲</h2>
+          <p id="songArtist" class="song-artist">请从播放列表中选择</p>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-current" id="progressCurrent"></div>
+            <div class="progress-thumb" id="progressThumb"></div>
+          </div>
+          <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
+          </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="controls">
+          <button class="control-btn" id="shuffleBtn" title="随机播放">
+            <i class="fas fa-random"></i>
+          </button>
+          <button class="control-btn" id="prevBtn" title="上一首">
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button class="control-btn play-btn" id="playBtn" title="播放/暂停">
+            <i class="fas fa-play"></i>
+          </button>
+          <button class="control-btn" id="nextBtn" title="下一首">
+            <i class="fas fa-step-forward"></i>
+          </button>
+          <button class="control-btn" id="repeatBtn" title="循环模式">
+            <i class="fas fa-repeat"></i>
+          </button>
+        </div>
+
+        <!-- 音量控制 -->
+        <div class="volume-control">
+          <button class="control-btn" id="muteBtn" title="静音">
+            <i class="fas fa-volume-up"></i>
+          </button>
+          <div class="volume-slider">
+            <div class="volume-bar" id="volumeBar">
+              <div class="volume-current" id="volumeCurrent"></div>
+              <div class="volume-thumb" id="volumeThumb"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 播放列表 -->
+    <div class="playlist">
+      <div class="playlist-header">
+        <h3><i class="fas fa-list-music"></i> 播放列表</h3>
+        <span class="song-count" id="songCount">0 首</span>
+      </div>
+      <ul class="playlist-list" id="playlistList">
+        <!-- 由 JavaScript 动态生成 -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- 音频元素 -->
+  <audio id="audioPlayer"></audio>
+
+  <script src="js/player.js"></script>
+</body>
+</html>
